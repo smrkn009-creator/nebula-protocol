@@ -1,0 +1,27 @@
+# Render Blueprint — one-click free deploy (alternative to manual setup in DEPLOY.md).
+# NOTE: database is Neon (free, permanent). Render's own free Postgres expires after 30 days,
+# so we intentionally do NOT create one here. Paste your Neon URL as DATABASE_URL instead.
+services:
+  - type: web
+    name: nebula-protocol
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_BOOTSTRAP_PASSWORD
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false # paste Neon connection string in dashboard
+      - key: BASE_URL
+        sync: false # paste https://YOUR-APP.onrender.com after first deploy (for Discord)
